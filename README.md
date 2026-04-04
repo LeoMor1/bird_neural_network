@@ -1,1 +1,1 @@
-![Rust CI](https://github.com/ton-utilisateur/ton-projet/actions/workflows/rust.yml/badge.svg)
+![Rust CI](https://github.com/LeoMor1/bird_neural_network/action/workflows/rust.yaml/badge.svg)
