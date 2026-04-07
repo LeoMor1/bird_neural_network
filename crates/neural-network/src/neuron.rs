@@ -7,7 +7,7 @@ pub struct Neuron {
 }
 
 impl Neuron {
-    pub fn random(rng : &mut dyn Rng, input_size: usize) -> Self{
+    pub fn random(rng: &mut dyn Rng, input_size: usize) -> Self {
         let bias = rng.random_range(-1.0..=1.0);
 
         let weights = (0..input_size)

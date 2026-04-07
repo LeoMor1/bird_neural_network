@@ -13,7 +13,7 @@ pub struct LayerToplology {
 }
 
 impl Network {
-    pub fn random(rng: &mut dyn Rng ,layers: &[LayerToplology]) -> Self {
+    pub fn random(rng: &mut dyn Rng, layers: &[LayerToplology]) -> Self {
         assert!(layers.len() > 1);
         let layers = layers
             .windows(2)
