@@ -19,3 +19,18 @@ impl GeneticAlgorithm {
             .collect()
     }
 }
+
+pub trait Individual {
+    fn fitness(&self) -> f32;
+}
+
+pub trait SelectionMethod {
+    fn select<'a, I>(&self, rng: &mut dyn Rng ,population: &'a [I]) -> &'a I
+    where
+        I: Individual,
+    {
+        population
+            .choose_weighted(rng, |indidual| indidual.fitness())
+            .expect("got empty populqtion")
+    }
+}
