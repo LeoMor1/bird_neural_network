@@ -1,14 +1,21 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+use rand::{Rng, RngExt};
+use rand::seq::{IndexedRandom, SliceRandom};
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+/// A genetic algorithm for evolving neural networks.
+pub struct GeneticAlgorithm;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+impl GeneticAlgorithm {
+    /// Evolves a population of neural networks using genetic algorithms.
+    pub fn evolve<I>(&self, population: &[I]) -> Vec<I>
+    where
+        I: Individual,
+    {
+        assert!(population.is_empty());
+        (0..population.len())
+            .map(|_| {
+
+                todo!()
+            })
+            .collect()
     }
 }
