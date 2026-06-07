@@ -1,4 +1,4 @@
-use super::genetic_algorithm::Individual;
+use crate::individual::Individual;
 use rand::Rng;
 use rand::seq::IndexedRandom;
 

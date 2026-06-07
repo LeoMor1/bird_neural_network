@@ -1,4 +1,6 @@
-use crate::chromosome::Chromosome;
+use crate::{
+    cossover_method::CrossoverMethod, individual::Individual, mutation_method::MutationMethod,
+};
 use rand::Rng;
 
 use super::selection_method::SelectionMethod;
@@ -6,6 +8,8 @@ use super::selection_method::SelectionMethod;
 /// A genetic algorithm for evolving neural networks.
 pub struct GeneticAlgorithm<S> {
     selection_method: S,
+    crossover_method: Box<dyn CrossoverMethod>,
+    mutation_method: Box<dyn MutationMethod>,
 }
 
 impl<S> GeneticAlgorithm<S>
@@ -13,8 +17,16 @@ where
     S: SelectionMethod,
 {
     /// Evolves a population of neural networks using genetic algorithms.
-    pub fn new(selection_method: S) -> Self {
-        Self { selection_method }
+    pub fn new(
+        selection_method: S,
+        crossover_method: impl CrossoverMethod + 'static,
+        mutation_method: impl MutationMethod + 'static,
+    ) -> Self {
+        Self {
+            selection_method,
+            crossover_method: Box::new(crossover_method),
+            mutation_method: Box::new(mutation_method),
+        }
     }
 
     pub fn evolve<I>(&self, rng: &mut dyn Rng, population: &[I]) -> Vec<I>
@@ -27,13 +39,12 @@ where
                 let parent_a = self.selection_method.select(rng, population).chromosome();
                 let parent_b = self.selection_method.select(rng, population).chromosome();
 
-                todo!()
+                let mut child = self.crossover_method.crossover(rng, parent_a, parent_b);
+
+                self.mutation_method.mutate(rng, &mut child);
+
+                I::create(child)
             })
             .collect()
     }
-}
-
-pub trait Individual {
-    fn fitness(&self) -> f32;
-    fn chromosome(&self) -> &Chromosome;
 }
