@@ -1,9 +1,9 @@
+use super::genetic_algorithm::Individual;
 use rand::Rng;
 use rand::seq::IndexedRandom;
-use super::genetic_algorithm::Individual;
 
 pub trait SelectionMethod {
-    fn select<'a, I>(&self, rng: &mut dyn Rng ,population: &'a [I]) -> &'a I
+    fn select<'a, I>(&self, rng: &mut dyn Rng, population: &'a [I]) -> &'a I
     where
         I: Individual;
 }
@@ -20,13 +20,13 @@ impl Default for RouletteWheelSelection {
     fn default() -> Self {
         Self::new()
     }
-} 
+}
 
-impl SelectionMethod for RouletteWheelSelection { 
-    fn select<'a, I>(&self, rng: &mut dyn Rng ,population: &'a [I]) -> &'a I 
-    where I: 
-        Individual 
-    { 
+impl SelectionMethod for RouletteWheelSelection {
+    fn select<'a, I>(&self, rng: &mut dyn Rng, population: &'a [I]) -> &'a I
+    where
+        I: Individual,
+    {
         population
             .choose_weighted(rng, |individual| individual.fitness())
             .expect("got an empty population")
