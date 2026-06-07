@@ -3,7 +3,7 @@ use rand::{Rng, RngExt};
 #[derive(Debug)]
 /// A neuron in a neural network.
 pub struct Neuron {
-    pub bias: f32, // bias of the neuron
+    pub bias: f32,         // bias of the neuron
     pub weights: Vec<f32>, // weight of each input (simulate synaptic weights)
 }
 
