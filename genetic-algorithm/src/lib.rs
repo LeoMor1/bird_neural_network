@@ -4,13 +4,13 @@ mod individual;
 mod mutation;
 mod selection;
 
-use rand::Rng;
-
 pub use self::chromosome::*;
 pub use self::crossover::*;
 pub use self::individual::*;
 pub use self::mutation::*;
 pub use self::selection::*;
+
+use rand::Rng;
 
 /// A genetic algorithm for evolving neural networks.
 pub struct GeneticAlgorithm<S> {

@@ -1,10 +1,10 @@
 [package]
-name = "neural-network"
+name = "lib-genetic-algorithm"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-rand = "0.10.0"
+rand = "0.10.1"
 
 [dev-dependencies]
 approx = "0.5.1"

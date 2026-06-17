@@ -1,0 +1,9 @@
+[package]
+name = "lib-gui"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+iced = { version = "0.14.0", features = ["canvas", "tokio"] }
+lib-simulation = { path = "../simulation/" }
+rand = "0.10.1"
