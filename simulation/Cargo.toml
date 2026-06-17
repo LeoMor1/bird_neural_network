@@ -6,4 +6,7 @@ edition = "2024"
 [dependencies]
 nalgebra = { version = "0.35.0", features = ["rand-no-std"] }
 rand = "0.10.1"
+lib-neural-network = { path = "../neural-network/" }
+
+[dev-dependencies]
 test-case = "3.3.1"

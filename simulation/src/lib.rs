@@ -3,6 +3,8 @@ mod eye;
 mod food;
 mod world;
 
+use std::f32::consts::FRAC_PI_2;
+
 pub use self::animal::*;
 pub use self::eye::*;
 pub use self::food::*;
@@ -10,6 +12,11 @@ pub use self::world::*;
 
 use nalgebra::{self as na};
 use rand::{Rng, RngExt};
+
+const SPEED_MIN: f32 = 0.001;
+const SPEED_MAX: f32 = 0.005;
+const SPEED_ACCEL: f32 = 0.2;
+const ROTATION_ACCEL: f32 = FRAC_PI_2;
 
 pub struct Simulation {
     world: World,
@@ -27,8 +34,9 @@ impl Simulation {
     }
 
     pub fn step(&mut self, rng: &mut dyn Rng) {
-        self.process_movements();
         self.process_collisions(rng);
+        self.process_brain();
+        self.process_movements();
     }
 
     fn process_movements(&mut self) {
@@ -49,6 +57,22 @@ impl Simulation {
                     food.position = rng.random()
                 }
             }
+        }
+    }
+
+    fn process_brain(&mut self) {
+        for animal in &mut self.world.animals {
+            let vision =
+                animal
+                    .eye
+                    .process_vision(animal.position, animal.rotation, &self.world.foods);
+            let response = animal.brain.propagate(vision);
+
+            let speed = response[0].clamp(-SPEED_ACCEL, SPEED_ACCEL);
+            let rotation = response[1].clamp(-ROTATION_ACCEL, ROTATION_ACCEL);
+
+            animal.speed = (animal.speed + speed).clamp(SPEED_MIN, SPEED_MAX);
+            animal.rotation = nalgebra::Rotation2::new(animal.rotation.angle() + rotation);
         }
     }
 }

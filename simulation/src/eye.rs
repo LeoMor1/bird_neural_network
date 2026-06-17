@@ -81,10 +81,9 @@ impl Default for Eye {
     }
 }
 
+#[cfg(test)]
 mod tests {
     use std::f32::consts::FRAC_PI_2;
-
-    use crate::food;
 
     use super::*;
     use test_case::test_case;
@@ -244,6 +243,7 @@ mod tests {
             rot: 3.0 * FRAC_PI_2,
             fov_angle,
             expected_vision,
-        }.run()
+        }
+        .run()
     }
 }
