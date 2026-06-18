@@ -1,7 +1,5 @@
 use std::f32::consts::{FRAC_PI_4, PI};
 
-use nalgebra::Rotation;
-
 use crate::Food;
 
 const FOV_RANGE: f32 = 0.25;

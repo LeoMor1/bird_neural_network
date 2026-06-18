@@ -5,7 +5,7 @@ use super::neuron::Neuron;
 #[derive(Debug)]
 /// A layer of neurons in a neural network.
 pub struct Layer {
-    neurons: Vec<Neuron>, // neurons in the layer
+    pub(crate) neurons: Vec<Neuron>, // neurons in the layer
 }
 
 impl Layer {
@@ -41,5 +41,17 @@ impl Layer {
             .iter()
             .map(|neuron| neuron.propagate(&inputs))
             .collect()
+    }
+
+    pub fn from_weights(
+        input_size: usize,
+        output_size: usize,
+        weights: &mut dyn Iterator<Item = f32>,
+    ) -> Self {
+        let neurons = (0..output_size)
+            .map(|_| Neuron::from_weights(input_size, weights))
+            .collect();
+
+        Self { neurons }
     }
 }

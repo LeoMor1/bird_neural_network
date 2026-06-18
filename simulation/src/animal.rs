@@ -1,8 +1,8 @@
-use lib_neural_network::network::{LayerToplology, Network};
+use lib_genetic_algorithm::Chromosome;
 use nalgebra as na;
 use rand::{Rng, RngExt};
 
-use crate::Eye;
+use crate::{Brain, Eye};
 
 #[derive(Debug)]
 pub struct Animal {
@@ -10,30 +10,31 @@ pub struct Animal {
     pub(crate) rotation: na::Rotation2<f32>,
     pub(crate) speed: f32,
     pub(crate) eye: Eye,
-    pub(crate) brain: Network,
+    pub(crate) brain: Brain,
+    pub(crate) satiation: usize,
 }
 
 impl Animal {
-    pub fn random(rng: &mut dyn Rng) -> Self {
-        let eye = Eye::default();
-        let brain = Network::random(
-            rng,
-            &[
-                LayerToplology {
-                    neurons: eye.cells(),
-                },
-                LayerToplology {
-                    neurons: 2 * eye.cells(),
-                },
-                LayerToplology { neurons: 2 },
-            ],
-        );
+    fn new(eye: Eye, brain: Brain, rng: &mut dyn Rng) -> Self {
         Self {
             position: rng.random(),
             rotation: rng.random(),
             speed: 0.002,
             eye,
             brain,
+            satiation: 0,
+        }
+    }
+    pub fn random(rng: &mut dyn Rng) -> Self {
+        let eye = Eye::default();
+        let brain = Brain::random(rng, &eye);
+        Self {
+            position: rng.random(),
+            rotation: rng.random(),
+            speed: 0.002,
+            eye,
+            brain,
+            satiation: 0,
         }
     }
 
@@ -43,5 +44,16 @@ impl Animal {
 
     pub fn rotation(&self) -> na::Rotation2<f32> {
         self.rotation
+    }
+
+    pub fn as_chromosome(&self) -> Chromosome {
+        self.brain.as_chromosome()
+    }
+
+    pub(crate) fn from_chromosome(chromosome: Chromosome, rng: &mut dyn Rng) -> Self {
+        let eye = Eye::default();
+        let brain = Brain::from_chromosome(chromosome, &eye);
+
+        Self::new(eye, brain, rng)
     }
 }

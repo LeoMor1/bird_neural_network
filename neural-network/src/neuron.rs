@@ -3,8 +3,8 @@ use rand::{Rng, RngExt};
 #[derive(Debug)]
 /// A neuron in a neural network.
 pub struct Neuron {
-    pub bias: f32,         // bias of the neuron
-    pub weights: Vec<f32>, // weight of each input (simulate synaptic weights)
+    pub(crate) bias: f32,         // bias of the neuron
+    pub(crate) weights: Vec<f32>, // weight of each input (simulate synaptic weights)
 }
 
 impl Neuron {
@@ -47,6 +47,16 @@ impl Neuron {
             .sum::<f32>();
 
         (self.bias + output).max(0.0) // Add bias and apply ReLU activation
+    }
+
+    pub fn from_weights(input_size: usize, weights: &mut dyn Iterator<Item = f32>) -> Self {
+        let bias = weights.next().expect("got not enough weights");
+
+        let weights = (0..input_size)
+            .map(|_| weights.next().expect("got not enough weights"))
+            .collect();
+
+        Self { bias, weights }
     }
 }
 
